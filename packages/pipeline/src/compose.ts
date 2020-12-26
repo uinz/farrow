@@ -15,7 +15,7 @@ export const compose = <T, U>(middlewares: KoaMiddleware<T, U>[]) => {
     }
   }
 
-  return async (context: T, next?: KoaMiddleware<T, U>) => {
+  return (context: T, next?: KoaMiddleware<T, U>) => {
     let pipeline = createPipeline<T, MiddlewareReturnType<U>>()
 
     pipeline.use(...middlewares.map(toKoaMiddleware))
@@ -23,7 +23,9 @@ export const compose = <T, U>(middlewares: KoaMiddleware<T, U>[]) => {
     if (next) pipeline.use(next)
 
     return pipeline.run(context, {
-      onLast: async () => {},
+      onLast: async () => {
+        // empty
+      },
     })
   }
 }
@@ -31,7 +33,7 @@ export const compose = <T, U>(middlewares: KoaMiddleware<T, U>[]) => {
 const toKoaMiddleware = <T, U>(middleware: KoaMiddleware<T, U>): typeof middleware => {
   return (context, next) => {
     let count = 0
-    return middleware(context, async (context) => {
+    return middleware(context, (context) => {
       if (count++ > 0) throw new Error('next() called multiple times')
       return next(context)
     })

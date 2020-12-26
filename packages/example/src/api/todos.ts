@@ -56,7 +56,7 @@ router
       content: String,
     },
   })
-  .use(async (request) => {
+  .use((request) => {
     let todo: Todo = {
       id: uid++,
       content: request.body.content,
@@ -76,7 +76,7 @@ router
       todoId: Int,
     },
   })
-  .use(async (request) => {
+  .use((request) => {
     let todo = fakeData.find((todo) => todo.id === request.params.todoId)
 
     if (!todo) {
@@ -99,7 +99,7 @@ router
       content: String,
     },
   })
-  .use(async (request) => {
+  .use((request) => {
     let todo = fakeData.find((todo) => todo.id === request.params.todoId)
 
     if (!todo) {
@@ -119,7 +119,7 @@ router
       todoId: Int,
     },
   })
-  .use(async (request) => {
+  .use((request) => {
     let index = fakeData.findIndex((todo) => todo.id === request.params.todoId)
 
     if (index === -1) {
